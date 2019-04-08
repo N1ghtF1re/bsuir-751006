@@ -1,6 +1,6 @@
 "use strict"
 
-const API_KEY = "38f6b3ab94ad406db0b847023741dc13"
+const API_KEY = "38f6b3ab94ad406db0b847023741dc13";
 const API_DOMAIN = 'https://newsapi.org/v2/'
 
 const MAX_PAGE = 8
@@ -78,27 +78,24 @@ function fillSources() {
           'apiKey=' + API_KEY
 
    let req = new Request(url)
-   fetch(req).then(function(response) {
-      return response.json()
-   }).then(function(json){
-      var select = document.getElementById("search__source");
+   fetch(req).then((response) => response.json())
+      .then((json) => {
+      let select = document.getElementById("search__source");
 
       if(json.status) {
          let sources = json.sources
-         sources.forEach(function(source) {
+         sources.forEach((source) => {
             let el = document.createElement("option")
             el.textContent = source.name
             el.value = source.id
             select.appendChild(el)
          })
-
-
       }
    })
 }
 
 function fillNews() {
-   let url = 'https://newsapi.org/v2/top-headlines?' +
+   let url = API_DOMAIN + 'top-headlines?' +
           'language=en&' +
           'apiKey=' + API_KEY + "&" +
           'page=' + current_page++ + '&' +
@@ -113,18 +110,17 @@ function fillNews() {
    }
 
    let req = new Request(url)
-   fetch(req).then(function(response) {
-      return response.json();
-   }).then(function(json){
+   fetch(req).then((response) => response.json())
+      .then((json) => {
       let news = document.getElementById('news')
 
       let articles = json.articles
       if(json.status) {
-         articles.forEach(function(article) {
+         articles.forEach((article) => {
            news.appendChild(renderNewsItem(article))
          })
 
-         if(articles.length == 0 || current_page == MAX_PAGE) {
+         if(articles.length == 0 || current_page == MAX_PAGE + 1) {
             let news = document.getElementById('next-news')
             news.style.display = 'none'
          }
@@ -169,5 +165,5 @@ searchButton.onclick = function() {
    makeSearch()
 }
 
-fillNews();
+fillNews()
 fillSources()
